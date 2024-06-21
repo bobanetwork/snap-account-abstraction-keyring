@@ -1,13 +1,12 @@
 import React, { useContext } from 'react';
 import semver from 'semver';
 import styled from 'styled-components';
-import Logo from '../assets/boba-logo.png';
-import { HeaderButtons } from './Buttons';
-import snapPackageInfo from '../../../snap/package.json';
 import packageInfo from '../../package.json';
-import { defaultSnapOrigin } from '../config';
+import Logo from '../assets/boba-logo.png';
+import { defaultSnapOrigin, snapPackageInfoVersion } from '../config';
 import { MetamaskActions, MetaMaskContext } from '../hooks';
 import { connectSnap, getSnap } from '../utils';
+import { HeaderButtons } from './Buttons';
 
 const HeaderWrapper = styled.header`
   display: flex;
@@ -58,7 +57,7 @@ export const Header = () => {
 
   const updateAvailable = Boolean(
     state?.installedSnap &&
-      semver.gt(snapPackageInfo.version, state.installedSnap?.version),
+    semver.gt(snapPackageInfoVersion, state.installedSnap?.version),
   );
 
   const handleConnectClick = async () => {
@@ -85,22 +84,17 @@ export const Header = () => {
     return (
       <VersionStyle>
         <div>
-          <b>Dapp version: </b>
-          {packageInfo.version}
-        </div>
-
-        <div>
-          <b>Snap version (expected): </b>
-          {snapPackageInfo.version}
+          <span>Snap version (expected): </span>
+          {snapPackageInfoVersion}
         </div>
 
         {state.installedSnap ? (
           <div>
-            <b>Snap version (installed): </b> {state.installedSnap?.version}
+            <span>Snap version (installed): </span> {state.installedSnap?.version}
           </div>
         ) : (
           <div>
-            <b>Snap version (to install): </b> {snapPackageInfo.version}
+              <span>Snap version (to install): </span> {snapPackageInfoVersion}
           </div>
         )}
 
@@ -116,7 +110,7 @@ export const Header = () => {
         <Title>AA HC Wallet</Title>
       </LogoWrapper>
       <RightContainer>
-        {/* <Version /> */}
+        <Version />
         <HeaderButtons
           state={state}
           onConnectClick={handleConnectClick}
